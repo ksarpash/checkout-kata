@@ -8,6 +8,10 @@ interface SpecialOffer {
   price: number;
 }
 
+export interface SpecialOffers extends Record<string, SpecialOffer> {}
+
+export interface UnitPrices extends Record<string, number> {}
+
 export class Checkout implements ICheckout {
   private cart: ICart;
   private pricingService: IPricingService;
@@ -31,11 +35,13 @@ interface IPricingService {
 }
 
 export class PricingService implements IPricingService {
-  private prices: Record<string, number> = { A: 50, B: 30, C: 20, D: 15 };
-  private offers: Record<string, SpecialOffer> = {
-    A: { quantity: 3, price: 130 },
-    B: { quantity: 2, price: 45 },
-  };
+  private prices: UnitPrices;
+  private offers: SpecialOffers;
+
+  constructor(prices: UnitPrices, offers: SpecialOffers) {
+    this.prices = prices;
+    this.offers = offers;
+  }
   calculateTotalPrice(cart: ICart): number {
     let total = 0;
     const items = cart.getItems();
