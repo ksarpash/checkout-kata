@@ -80,7 +80,7 @@ describe("Checkout with an non existant special offer", () => {
     );
   });
 
-  it("should warn if an unrecognized offer key is provided", () => {
+  it("should warn if an unrecognized offer key is provided and default to the unit price", () => {
     const consoleWarnSpy = jest.spyOn(console, "warn").mockImplementation();
     checkout.scan("B");
     checkout.scan("B");
