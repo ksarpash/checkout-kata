@@ -14,16 +14,21 @@ export class Checkout implements ICheckout {
     A: { quantity: 3, price: 130 },
     B: { quantity: 2, price: 45 },
   };
-  private cart: Record<string, number> = {};
+  private cart: ICart;
+
+  constructor(cart: ICart) {
+    this.cart = cart;
+  }
 
   public scan(item: string): void {
-    this.cart[item] = (this.cart[item] || 0) + 1;
+    this.cart.addItem(item);
   }
 
   public getTotalPrice(): number {
     let total = 0;
-    for (const item in this.cart) {
-      const count = this.cart[item];
+    const items = this.cart.getItems();
+    for (const item in items) {
+      const count = items[item];
       const unitPrice = this.prices[item] || 0;
       const offer = this.offers[item];
       if (offer) {
@@ -35,5 +40,22 @@ export class Checkout implements ICheckout {
       }
     }
     return total;
+  }
+}
+
+interface ICart {
+  addItem(sku: string): void;
+  getItems(): Record<string, number>;
+}
+
+export class cart implements ICart {
+  private items: Record<string, number> = {};
+
+  addItem(sku: string) {
+    this.items[sku] = (this.items[sku] || 0) + 1;
+  }
+
+  getItems() {
+    return { ...this.items };
   }
 }
