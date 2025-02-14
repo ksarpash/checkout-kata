@@ -1,13 +1,8 @@
-import {
-  Checkout,
-  PricingService,
-  cart,
-  SpecialOffers,
-  UnitPrices,
-} from "./checkout";
+import { Checkout, PricingService, cart } from "./checkout";
+import { IspecialOffers, IunitPrices } from "./interfaces";
 
-const unitPrices: UnitPrices = { A: 50, B: 30, C: 20, D: 15 };
-const specialOffers: SpecialOffers = {
+const unitPrices: IunitPrices = { A: 50, B: 30, C: 20, D: 15 };
+const specialOffers: IspecialOffers = {
   A: { quantity: 3, price: 130 },
   B: { quantity: 2, price: 45 },
 };

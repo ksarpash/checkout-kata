@@ -1,22 +1,16 @@
-interface ICheckout {
-  scan(item: string): void;
-  getTotalPrice(): number;
-}
+import {
+  Icart,
+  Icheckout,
+  IpricingService,
+  IspecialOffers,
+  IunitPrices,
+} from "./interfaces";
 
-interface SpecialOffer {
-  quantity: number;
-  price: number;
-}
+export class Checkout implements Icheckout {
+  private cart: Icart;
+  private pricingService: IpricingService;
 
-export interface SpecialOffers extends Record<string, SpecialOffer> {}
-
-export interface UnitPrices extends Record<string, number> {}
-
-export class Checkout implements ICheckout {
-  private cart: ICart;
-  private pricingService: IPricingService;
-
-  constructor(cart: ICart, pricingService: IPricingService) {
+  constructor(cart: Icart, pricingService: IpricingService) {
     this.cart = cart;
     this.pricingService = pricingService;
   }
@@ -30,19 +24,15 @@ export class Checkout implements ICheckout {
   }
 }
 
-interface IPricingService {
-  calculateTotalPrice(cart: ICart): number;
-}
+export class PricingService implements IpricingService {
+  private prices: IunitPrices;
+  private offers: IspecialOffers;
 
-export class PricingService implements IPricingService {
-  private prices: UnitPrices;
-  private offers: SpecialOffers;
-
-  constructor(prices: UnitPrices, offers: SpecialOffers) {
+  constructor(prices: IunitPrices, offers: IspecialOffers) {
     this.prices = prices;
     this.offers = offers;
   }
-  calculateTotalPrice(cart: ICart): number {
+  calculateTotalPrice(cart: Icart): number {
     let total = 0;
     const items = cart.getItems();
     for (const item in items) {
@@ -60,12 +50,8 @@ export class PricingService implements IPricingService {
     return total;
   }
 }
-interface ICart {
-  addItem(sku: string): void;
-  getItems(): Record<string, number>;
-}
 
-export class cart implements ICart {
+export class cart implements Icart {
   private items: Record<string, number> = {};
 
   addItem(sku: string) {
