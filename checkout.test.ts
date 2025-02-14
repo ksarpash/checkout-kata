@@ -1,5 +1,6 @@
-import { Checkout, PricingService } from "./checkout";
+import { Checkout } from "./checkout";
 import { Cart } from "./Cart";
+import { PricingService } from "./PricingService";
 import { IspecialOffers, IunitPrices } from "./interfaces";
 
 const unitPrices: IunitPrices = { A: 50, B: 30, C: 20, D: 15 };
