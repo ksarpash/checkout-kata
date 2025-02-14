@@ -1,9 +1,33 @@
 import {
   ICart,
   IPricingService,
+  ISpecialOffer,
   ISpecialOffers,
   IUnitPrices,
 } from "./interfaces";
+
+export interface PricingStrategy {
+  getPrice(
+    quantity: number,
+    unitPrice: number,
+    specialOffer: ISpecialOffer
+  ): number;
+}
+
+const PricingStrategies: Record<string, PricingStrategy> = {
+  multiBuy3: {
+    getPrice: (
+      quantity: number,
+      unitPrice: number,
+      specialOffer: ISpecialOffer
+    ): number => {
+      let total = 0;
+      const sets = Math.floor(quantity / specialOffer.quantity);
+      const remainder = quantity % specialOffer.quantity;
+      return (total += sets * specialOffer.price + remainder * unitPrice);
+    },
+  },
+};
 
 export class PricingService implements IPricingService {
   private prices: IUnitPrices;
@@ -21,9 +45,11 @@ export class PricingService implements IPricingService {
       const unitPrice = this.prices[item] || 0;
       const offer = this.offers[item];
       if (offer) {
-        const sets = Math.floor(count / offer.quantity);
-        const remainder = count % offer.quantity;
-        total += sets * offer.price + remainder * unitPrice;
+        total += PricingStrategies[offer.offerType].getPrice(
+          count,
+          unitPrice,
+          offer
+        );
       } else {
         total += unitPrice * count;
       }

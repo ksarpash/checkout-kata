@@ -13,6 +13,7 @@ export interface IPricingService {
 }
 
 export interface ISpecialOffer {
+  offerType: string;
   quantity: number;
   price: number;
 }
