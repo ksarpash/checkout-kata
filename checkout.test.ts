@@ -7,8 +7,8 @@ import { SpecialOfferPricingStrategies } from "./specialOfferPricingStrategies";
 let checkout: Checkout;
 const unitPrices: IUnitPrices = { A: 50, B: 30, C: 20, D: 15 };
 const specialOffers: ISpecialOffers = {
-  A: { offerType: "multiBuy3", quantity: 3, price: 130 },
-  B: { offerType: "multiBuy2", quantity: 2, price: 45 },
+  A: { offerType: "multiBuy3" },
+  B: { offerType: "multiBuy2" },
 };
 
 describe("Checkout", () => {
