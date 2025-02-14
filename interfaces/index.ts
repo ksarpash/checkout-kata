@@ -18,6 +18,13 @@ export interface ISpecialOffer {
   price: number;
 }
 
+export interface ISpecialOfferPricingStrategy {
+  getPrice(quantity: number, unitPrice: number): number;
+}
+
+export interface ISpecialOfferPricingStragies
+  extends Record<string, ISpecialOfferPricingStrategy> {}
+
 export interface ISpecialOffers extends Record<string, ISpecialOffer> {}
 
 export interface IUnitPrices extends Record<string, number> {}

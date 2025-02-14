@@ -1,37 +1,25 @@
 import {
   ICart,
   IPricingService,
-  ISpecialOffer,
+  ISpecialOfferPricingStragies,
   ISpecialOffers,
   IUnitPrices,
 } from "./interfaces";
-
-export interface PricingStrategy {
-  getPrice(quantity: number, unitPrice: number): number;
-}
-
-export class QuantityOfferStrategy implements PricingStrategy {
-  constructor(private offerQty: number, private offerPrice: number) {}
-
-  getPrice(quantity: number, unitPrice: number): number {
-    const sets = Math.floor(quantity / this.offerQty);
-    const remainder = quantity % this.offerQty;
-    return sets * this.offerPrice + remainder * unitPrice;
-  }
-}
-
-const PricingStrategies: Record<string, PricingStrategy> = {
-  multiBuy3: new QuantityOfferStrategy(3, 130),
-  multiBuy2: new QuantityOfferStrategy(2, 45),
-};
+import { PricingStrategies } from "./specialOfferPricingStrategies";
 
 export class PricingService implements IPricingService {
   private prices: IUnitPrices;
-  private offers: ISpecialOffers;
+  private specialOffers: ISpecialOffers;
+  private specialOfferPricingStrategies: ISpecialOfferPricingStragies;
 
-  constructor(prices: IUnitPrices, offers: ISpecialOffers) {
+  constructor(
+    prices: IUnitPrices,
+    offers: ISpecialOffers,
+    specialOfferPricingStrategies: ISpecialOfferPricingStragies
+  ) {
     this.prices = prices;
-    this.offers = offers;
+    this.specialOffers = offers;
+    this.specialOfferPricingStrategies = specialOfferPricingStrategies;
   }
   calculateTotalPrice(cart: ICart): number {
     let total = 0;
@@ -39,9 +27,12 @@ export class PricingService implements IPricingService {
     for (const item in items) {
       const count = items[item];
       const unitPrice = this.prices[item] || 0;
-      const offer = this.offers[item];
+      const offer = this.specialOffers[item];
       if (offer) {
-        total += PricingStrategies[offer.offerType].getPrice(count, unitPrice);
+        total += this.specialOfferPricingStrategies[offer.offerType].getPrice(
+          count,
+          unitPrice
+        );
       } else {
         total += unitPrice * count;
       }
