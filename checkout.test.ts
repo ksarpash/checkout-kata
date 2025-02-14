@@ -11,7 +11,7 @@ const specialOffers: ISpecialOffers = {
 
 describe("Checkout", () => {
   beforeEach(() => {});
-  it("should a total price of zero if nothing is scanned", () => {
+  it("should calculate a total price of zero if nothing is scanned", () => {
     const checkout = new Checkout(
       new Cart(),
       new PricingService(unitPrices, specialOffers)
@@ -19,7 +19,7 @@ describe("Checkout", () => {
     expect(checkout.getTotalPrice()).toBe(0);
   });
 
-  it("should return total price of a single item with a unit price if one is scanned", () => {
+  it("should calculate total price of a single item with a unit price if one is scanned", () => {
     const checkout = new Checkout(
       new Cart(),
       new PricingService(unitPrices, specialOffers)
@@ -28,7 +28,7 @@ describe("Checkout", () => {
     expect(checkout.getTotalPrice()).toBe(50);
   });
 
-  it("should return the total price of multiple items with no special offers", () => {
+  it("should calculate the total price of multiple items with no special offers", () => {
     const checkout = new Checkout(
       new Cart(),
       new PricingService(unitPrices, specialOffers)
@@ -41,7 +41,7 @@ describe("Checkout", () => {
     expect(checkout.getTotalPrice()).toBe(165);
   });
 
-  it("should return the total price of multiple single items with special offers", () => {
+  it("should calculate the total price of multiple single items with special offers", () => {
     const checkout = new Checkout(
       new Cart(),
       new PricingService(unitPrices, specialOffers)
@@ -53,7 +53,7 @@ describe("Checkout", () => {
     expect(checkout.getTotalPrice()).toBe(130);
   });
 
-  it("should return the total price of multiple items with special offers", () => {
+  it("should calculate the total price of multiple items with special offers", () => {
     const checkout = new Checkout(
       new Cart(),
       new PricingService(unitPrices, specialOffers)
