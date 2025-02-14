@@ -3,8 +3,16 @@ interface ICheckout {
   getTotalPrice(): number;
 }
 
+interface SpecialOffer {
+  quantity: number;
+  price: number;
+}
+
 export class Checkout implements ICheckout {
   private prices: Record<string, number> = { A: 50, B: 30, C: 20, D: 15 };
+  private offers: Record<string, SpecialOffer> = {
+    A: { quantity: 3, price: 130 },
+  };
   private cart: Record<string, number> = {};
 
   public scan(item: string): void {
@@ -13,11 +21,21 @@ export class Checkout implements ICheckout {
 
   getTotalPrice(): number {
     let total = 0;
+
     for (const item in this.cart) {
       const count = this.cart[item];
-      const price = this.prices[item] || 0;
-      total += count * price;
+      const unitPrice = this.prices[item] || 0;
+
+      const offer = this.offers[item];
+      if (offer) {
+        const sets = Math.floor(count / offer.quantity);
+        const remainder = count % offer.quantity;
+        total += sets * offer.price + remainder * unitPrice;
+      } else {
+        total += unitPrice * count;
+      }
     }
+
     return total;
   }
 }

@@ -21,4 +21,13 @@ describe("Checkout", () => {
     checkout.scan("D");
     expect(checkout.getTotalPrice()).toBe(165);
   });
+
+  it("should return the total price of multiple single items with special offers", () => {
+    const checkout = new Checkout();
+    checkout.scan("A");
+    checkout.scan("A");
+    checkout.scan("A");
+
+    expect(checkout.getTotalPrice()).toBe(130);
+  });
 });
