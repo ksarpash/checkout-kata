@@ -6,7 +6,7 @@ import { ISpecialOffers, IUnitPrices } from "./interfaces";
 const unitPrices: IUnitPrices = { A: 50, B: 30, C: 20, D: 15 };
 const specialOffers: ISpecialOffers = {
   A: { offerType: "multiBuy3", quantity: 3, price: 130 },
-  B: { offerType: "multiBuy3", quantity: 2, price: 45 },
+  B: { offerType: "multiBuy2", quantity: 2, price: 45 },
 };
 
 describe("Checkout", () => {
@@ -41,7 +41,7 @@ describe("Checkout", () => {
     expect(checkout.getTotalPrice()).toBe(165);
   });
 
-  it("should calculate the total price of multiple single items with special offers", () => {
+  it("should calculate the total price of multiple single items with multibuy3 special offers", () => {
     const checkout = new Checkout(
       new Cart(),
       new PricingService(unitPrices, specialOffers)
@@ -53,7 +53,7 @@ describe("Checkout", () => {
     expect(checkout.getTotalPrice()).toBe(130);
   });
 
-  it("should calculate the total price of multiple items with special offers", () => {
+  it("should calculate the total price of multiple items with multibuy3 and multibuy2 special offers", () => {
     const checkout = new Checkout(
       new Cart(),
       new PricingService(unitPrices, specialOffers)

@@ -7,26 +7,22 @@ import {
 } from "./interfaces";
 
 export interface PricingStrategy {
-  getPrice(
-    quantity: number,
-    unitPrice: number,
-    specialOffer: ISpecialOffer
-  ): number;
+  getPrice(quantity: number, unitPrice: number): number;
+}
+
+export class QuantityOfferStrategy implements PricingStrategy {
+  constructor(private offerQty: number, private offerPrice: number) {}
+
+  getPrice(quantity: number, unitPrice: number): number {
+    const sets = Math.floor(quantity / this.offerQty);
+    const remainder = quantity % this.offerQty;
+    return sets * this.offerPrice + remainder * unitPrice;
+  }
 }
 
 const PricingStrategies: Record<string, PricingStrategy> = {
-  multiBuy3: {
-    getPrice: (
-      quantity: number,
-      unitPrice: number,
-      specialOffer: ISpecialOffer
-    ): number => {
-      let total = 0;
-      const sets = Math.floor(quantity / specialOffer.quantity);
-      const remainder = quantity % specialOffer.quantity;
-      return (total += sets * specialOffer.price + remainder * unitPrice);
-    },
-  },
+  multiBuy3: new QuantityOfferStrategy(3, 130),
+  multiBuy2: new QuantityOfferStrategy(2, 45),
 };
 
 export class PricingService implements IPricingService {
@@ -45,11 +41,7 @@ export class PricingService implements IPricingService {
       const unitPrice = this.prices[item] || 0;
       const offer = this.offers[item];
       if (offer) {
-        total += PricingStrategies[offer.offerType].getPrice(
-          count,
-          unitPrice,
-          offer
-        );
+        total += PricingStrategies[offer.offerType].getPrice(count, unitPrice);
       } else {
         total += unitPrice * count;
       }
