@@ -30,4 +30,19 @@ describe("Checkout", () => {
 
     expect(checkout.getTotalPrice()).toBe(130);
   });
+
+  it("should return the total price of multiple items with special offers", () => {
+    const checkout = new Checkout();
+    checkout.scan("A");
+    checkout.scan("A");
+    checkout.scan("A");
+    checkout.scan("A");
+    checkout.scan("A");
+    checkout.scan("B");
+    checkout.scan("C");
+    checkout.scan("D");
+    checkout.scan("B");
+
+    expect(checkout.getTotalPrice()).toBe(310);
+  });
 });
