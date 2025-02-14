@@ -9,15 +9,12 @@ interface SpecialOffer {
 }
 
 export class Checkout implements ICheckout {
-  private prices: Record<string, number> = { A: 50, B: 30, C: 20, D: 15 };
-  private offers: Record<string, SpecialOffer> = {
-    A: { quantity: 3, price: 130 },
-    B: { quantity: 2, price: 45 },
-  };
   private cart: ICart;
+  private pricingService: IPricingService;
 
-  constructor(cart: ICart) {
+  constructor(cart: ICart, pricingService: IPricingService) {
     this.cart = cart;
+    this.pricingService = pricingService;
   }
 
   public scan(item: string): void {
@@ -25,8 +22,23 @@ export class Checkout implements ICheckout {
   }
 
   public getTotalPrice(): number {
+    return this.pricingService.calculateTotalPrice(this.cart);
+  }
+}
+
+interface IPricingService {
+  calculateTotalPrice(cart: ICart): number;
+}
+
+export class PricingService implements IPricingService {
+  private prices: Record<string, number> = { A: 50, B: 30, C: 20, D: 15 };
+  private offers: Record<string, SpecialOffer> = {
+    A: { quantity: 3, price: 130 },
+    B: { quantity: 2, price: 45 },
+  };
+  calculateTotalPrice(cart: ICart): number {
     let total = 0;
-    const items = this.cart.getItems();
+    const items = cart.getItems();
     for (const item in items) {
       const count = items[item];
       const unitPrice = this.prices[item] || 0;
@@ -42,7 +54,6 @@ export class Checkout implements ICheckout {
     return total;
   }
 }
-
 interface ICart {
   addItem(sku: string): void;
   getItems(): Record<string, number>;
