@@ -84,8 +84,14 @@ describe("Checkout with an non existant special offer", () => {
     const consoleWarnSpy = jest.spyOn(console, "warn").mockImplementation();
     checkout.scan("B");
     checkout.scan("B");
+    checkout.scan("B");
+    checkout.scan("B");
+    checkout.scan("B");
+    checkout.scan("B");
+    checkout.scan("B");
+    checkout.scan("B");
 
-    expect(checkout.getTotalPrice()).toBe(60);
+    expect(checkout.getTotalPrice()).toBe(240);
     expect(consoleWarnSpy).toHaveBeenCalledWith(
       'Unrecognized offer key: "undefined". Defaulting to no offer.'
     );
