@@ -1,4 +1,5 @@
-import { Checkout, PricingService, cart } from "./checkout";
+import { Checkout, PricingService } from "./checkout";
+import { Cart } from "./Cart";
 import { IspecialOffers, IunitPrices } from "./interfaces";
 
 const unitPrices: IunitPrices = { A: 50, B: 30, C: 20, D: 15 };
@@ -11,7 +12,7 @@ describe("Checkout", () => {
   beforeEach(() => {});
   it("should a total price of zero if nothing is scanned", () => {
     const checkout = new Checkout(
-      new cart(),
+      new Cart(),
       new PricingService(unitPrices, specialOffers)
     );
     expect(checkout.getTotalPrice()).toBe(0);
@@ -19,7 +20,7 @@ describe("Checkout", () => {
 
   it("should return total price of a single item with a unit price if one is scanned", () => {
     const checkout = new Checkout(
-      new cart(),
+      new Cart(),
       new PricingService(unitPrices, specialOffers)
     );
     checkout.scan("A");
@@ -28,7 +29,7 @@ describe("Checkout", () => {
 
   it("should return the total price of multiple items with no special offers", () => {
     const checkout = new Checkout(
-      new cart(),
+      new Cart(),
       new PricingService(unitPrices, specialOffers)
     );
     checkout.scan("A");
@@ -41,7 +42,7 @@ describe("Checkout", () => {
 
   it("should return the total price of multiple single items with special offers", () => {
     const checkout = new Checkout(
-      new cart(),
+      new Cart(),
       new PricingService(unitPrices, specialOffers)
     );
     checkout.scan("A");
@@ -53,7 +54,7 @@ describe("Checkout", () => {
 
   it("should return the total price of multiple items with special offers", () => {
     const checkout = new Checkout(
-      new cart(),
+      new Cart(),
       new PricingService(unitPrices, specialOffers)
     );
     checkout.scan("A");
