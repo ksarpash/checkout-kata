@@ -10,7 +10,10 @@ class QuantityOfferStrategy implements ISpecialOfferPricingStrategy {
   }
 }
 
-export const PricingStrategies: Record<string, ISpecialOfferPricingStrategy> = {
+export const SpecialOfferPricingStrategies: Record<
+  string,
+  ISpecialOfferPricingStrategy
+> = {
   multiBuy3: new QuantityOfferStrategy(3, 130),
   multiBuy2: new QuantityOfferStrategy(2, 45),
 };

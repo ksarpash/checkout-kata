@@ -5,7 +5,7 @@ import {
   ISpecialOffers,
   IUnitPrices,
 } from "./interfaces";
-import { PricingStrategies } from "./specialOfferPricingStrategies";
+import { SpecialOfferPricingStrategies } from "./specialOfferPricingStrategies";
 
 export class PricingService implements IPricingService {
   private prices: IUnitPrices;

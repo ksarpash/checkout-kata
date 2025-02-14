@@ -2,6 +2,7 @@ import { Checkout } from "./checkout";
 import { Cart } from "./Cart";
 import { PricingService } from "./PricingService";
 import { ISpecialOffers, IUnitPrices } from "./interfaces";
+import { SpecialOfferPricingStrategies } from "./specialOfferPricingStrategies";
 
 const unitPrices: IUnitPrices = { A: 50, B: 30, C: 20, D: 15 };
 const specialOffers: ISpecialOffers = {
@@ -14,7 +15,11 @@ describe("Checkout", () => {
   it("should calculate a total price of zero if nothing is scanned", () => {
     const checkout = new Checkout(
       new Cart(),
-      new PricingService(unitPrices, specialOffers)
+      new PricingService(
+        unitPrices,
+        specialOffers,
+        SpecialOfferPricingStrategies
+      )
     );
     expect(checkout.getTotalPrice()).toBe(0);
   });
@@ -22,7 +27,11 @@ describe("Checkout", () => {
   it("should calculate total price of a single item with a unit price if one is scanned", () => {
     const checkout = new Checkout(
       new Cart(),
-      new PricingService(unitPrices, specialOffers)
+      new PricingService(
+        unitPrices,
+        specialOffers,
+        SpecialOfferPricingStrategies
+      )
     );
     checkout.scan("A");
     expect(checkout.getTotalPrice()).toBe(50);
@@ -31,7 +40,11 @@ describe("Checkout", () => {
   it("should calculate the total price of multiple items with no special offers", () => {
     const checkout = new Checkout(
       new Cart(),
-      new PricingService(unitPrices, specialOffers)
+      new PricingService(
+        unitPrices,
+        specialOffers,
+        SpecialOfferPricingStrategies
+      )
     );
     checkout.scan("A");
     checkout.scan("A");
@@ -44,7 +57,11 @@ describe("Checkout", () => {
   it("should calculate the total price of multiple single items with multibuy3 special offers", () => {
     const checkout = new Checkout(
       new Cart(),
-      new PricingService(unitPrices, specialOffers)
+      new PricingService(
+        unitPrices,
+        specialOffers,
+        SpecialOfferPricingStrategies
+      )
     );
     checkout.scan("A");
     checkout.scan("A");
@@ -56,7 +73,11 @@ describe("Checkout", () => {
   it("should calculate the total price of multiple items with multibuy3 and multibuy2 special offers", () => {
     const checkout = new Checkout(
       new Cart(),
-      new PricingService(unitPrices, specialOffers)
+      new PricingService(
+        unitPrices,
+        specialOffers,
+        SpecialOfferPricingStrategies
+      )
     );
     checkout.scan("A");
     checkout.scan("A");
