@@ -5,10 +5,11 @@ import { ISpecialOffers, IUnitPrices } from "./interfaces";
 import { SpecialOfferPricingStrategies } from "./specialOfferPricingStrategies";
 
 let checkout: Checkout;
-let unitPrices: IUnitPrices = { A: 50, B: 30, C: 20, D: 15 };
+let unitPrices: IUnitPrices = { A: 50, B: 30, C: 20, D: 15, E: 100 };
 let specialOffers: ISpecialOffers = {
   A: { offerType: "multiBuy3" },
   B: { offerType: "multiBuy2" },
+  E: { offerType: "tenPercentOff" },
 };
 
 describe("Checkout with offers that exist", () => {
@@ -60,6 +61,21 @@ describe("Checkout with offers that exist", () => {
     checkout.scan("B");
 
     expect(checkout.getTotalPrice()).toBe(310);
+  });
+
+  it("should calculate the total price of multiple items with multibuy3, multibuy2 and tenPercentOff special offers", () => {
+    checkout.scan("A");
+    checkout.scan("A");
+    checkout.scan("A");
+    checkout.scan("A");
+    checkout.scan("A");
+    checkout.scan("B");
+    checkout.scan("C");
+    checkout.scan("D");
+    checkout.scan("B");
+    checkout.scan("E");
+
+    expect(checkout.getTotalPrice()).toBe(400);
   });
 });
 
