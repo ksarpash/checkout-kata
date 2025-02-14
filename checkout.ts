@@ -4,11 +4,20 @@ interface ICheckout {
 }
 
 export class Checkout implements ICheckout {
-  scan(item: string): void {
-    throw new Error("Method not implemented.");
+  private prices: Record<string, number> = { A: 50, B: 30, C: 20, D: 15 };
+  private cart: Record<string, number> = {};
+
+  public scan(item: string): void {
+    this.cart[item] = (this.cart[item] || 0) + 1;
   }
 
   getTotalPrice(): number {
-    return 0;
+    let total = 0;
+    for (const item in this.cart) {
+      const count = this.cart[item];
+      const price = this.prices[item] || 0;
+      total += count * price;
+    }
+    return total;
   }
 }
