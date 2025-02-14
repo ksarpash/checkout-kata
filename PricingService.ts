@@ -27,21 +27,34 @@ export class PricingService implements IPricingService {
       const count = items[item];
       const unitPrice = this.prices[item] || 0;
       const offer = this.specialOffers[item];
-      if (offer) {
-        const specialOfferPricingStrategy =
-          this.specialOfferPricingStrategies[offer.offerType];
-        if (specialOfferPricingStrategy) {
-          total += specialOfferPricingStrategy.getPrice(count, unitPrice);
-        } else {
-          console.warn(
-            `Unrecognized offer key: "${specialOfferPricingStrategy}". Defaulting to no offer.`
-          );
-          total += unitPrice * count;
-        }
+
+      if (!offer) {
+        total += this.calculateRegularTotalPrice(unitPrice, count);
       } else {
-        total += unitPrice * count;
+        total += this.calculateSpecialOfferTotalPrice(offer, count, unitPrice);
       }
     }
     return total;
+  }
+
+  private calculateRegularTotalPrice(unitPrice: number, count: number): number {
+    return unitPrice * count;
+  }
+
+  private calculateSpecialOfferTotalPrice(
+    offer: { offerType: string },
+    count: number,
+    unitPrice: number
+  ): number {
+    const specialOfferPricingStrategy =
+      this.specialOfferPricingStrategies[offer.offerType];
+    if (specialOfferPricingStrategy) {
+      return specialOfferPricingStrategy.getPrice(count, unitPrice);
+    } else {
+      console.warn(
+        `Unrecognized offer key: "${specialOfferPricingStrategy}". Defaulting to no offer.`
+      );
+      return this.calculateRegularTotalPrice(unitPrice, count);
+    }
   }
 }
