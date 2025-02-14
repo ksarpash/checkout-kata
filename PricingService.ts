@@ -29,10 +29,16 @@ export class PricingService implements IPricingService {
       const unitPrice = this.prices[item] || 0;
       const offer = this.specialOffers[item];
       if (offer) {
-        total += this.specialOfferPricingStrategies[offer.offerType].getPrice(
-          count,
-          unitPrice
-        );
+        const specialOfferPricingStrategy =
+          this.specialOfferPricingStrategies[offer.offerType];
+        if (specialOfferPricingStrategy) {
+          total += specialOfferPricingStrategy.getPrice(count, unitPrice);
+        } else {
+          console.warn(
+            `Unrecognized offer key: "${specialOfferPricingStrategy}". Defaulting to no offer.`
+          );
+          total += unitPrice * count;
+        }
       } else {
         total += unitPrice * count;
       }

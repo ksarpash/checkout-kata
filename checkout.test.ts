@@ -5,13 +5,13 @@ import { ISpecialOffers, IUnitPrices } from "./interfaces";
 import { SpecialOfferPricingStrategies } from "./specialOfferPricingStrategies";
 
 let checkout: Checkout;
-const unitPrices: IUnitPrices = { A: 50, B: 30, C: 20, D: 15 };
-const specialOffers: ISpecialOffers = {
+let unitPrices: IUnitPrices = { A: 50, B: 30, C: 20, D: 15 };
+let specialOffers: ISpecialOffers = {
   A: { offerType: "multiBuy3" },
   B: { offerType: "multiBuy2" },
 };
 
-describe("Checkout", () => {
+describe("Checkout with offers that exist", () => {
   beforeEach(() => {
     checkout = new Checkout(
       new Cart(),
@@ -60,5 +60,34 @@ describe("Checkout", () => {
     checkout.scan("B");
 
     expect(checkout.getTotalPrice()).toBe(310);
+  });
+});
+
+describe("Checkout with an non existant special offer", () => {
+  beforeEach(() => {
+    unitPrices = { A: 50, B: 30, C: 20, D: 15 };
+    specialOffers = {
+      A: { offerType: "multiBuy3" },
+      B: { offerType: "multiBuy8" },
+    };
+    checkout = new Checkout(
+      new Cart(),
+      new PricingService(
+        unitPrices,
+        specialOffers,
+        SpecialOfferPricingStrategies
+      )
+    );
+  });
+
+  it("should warn if an unrecognized offer key is provided", () => {
+    const consoleWarnSpy = jest.spyOn(console, "warn").mockImplementation();
+    checkout.scan("B");
+    checkout.scan("B");
+
+    expect(checkout.getTotalPrice()).toBe(60);
+    expect(consoleWarnSpy).toHaveBeenCalledWith(
+      'Unrecognized offer key: "undefined". Defaulting to no offer.'
+    );
   });
 });
