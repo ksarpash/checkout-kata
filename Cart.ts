@@ -1,6 +1,6 @@
-import { Icart } from "./interfaces";
+import { ICart } from "./interfaces";
 
-export class Cart implements Icart {
+export class Cart implements ICart {
   private items: Record<string, number> = {};
 
   addItem(sku: string) {

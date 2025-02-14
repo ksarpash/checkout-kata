@@ -1,10 +1,10 @@
 import { Checkout } from "./checkout";
 import { Cart } from "./Cart";
 import { PricingService } from "./PricingService";
-import { IspecialOffers, IunitPrices } from "./interfaces";
+import { ISpecialOffers, IUnitPrices } from "./interfaces";
 
-const unitPrices: IunitPrices = { A: 50, B: 30, C: 20, D: 15 };
-const specialOffers: IspecialOffers = {
+const unitPrices: IUnitPrices = { A: 50, B: 30, C: 20, D: 15 };
+const specialOffers: ISpecialOffers = {
   A: { quantity: 3, price: 130 },
   B: { quantity: 2, price: 45 },
 };

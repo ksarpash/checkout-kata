@@ -1,19 +1,19 @@
 import {
-  Icart,
-  IpricingService,
-  IspecialOffers,
-  IunitPrices,
+  ICart,
+  IPricingService,
+  ISpecialOffers,
+  IUnitPrices,
 } from "./interfaces";
 
-export class PricingService implements IpricingService {
-  private prices: IunitPrices;
-  private offers: IspecialOffers;
+export class PricingService implements IPricingService {
+  private prices: IUnitPrices;
+  private offers: ISpecialOffers;
 
-  constructor(prices: IunitPrices, offers: IspecialOffers) {
+  constructor(prices: IUnitPrices, offers: ISpecialOffers) {
     this.prices = prices;
     this.offers = offers;
   }
-  calculateTotalPrice(cart: Icart): number {
+  calculateTotalPrice(cart: ICart): number {
     let total = 0;
     const items = cart.getItems();
     for (const item in items) {

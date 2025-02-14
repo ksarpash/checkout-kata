@@ -1,22 +1,22 @@
-export interface Icheckout {
+export interface ICheckout {
   scan(item: string): void;
   getTotalPrice(): number;
 }
 
-export interface Icart {
+export interface ICart {
   addItem(sku: string): void;
   getItems(): Record<string, number>;
 }
 
-export interface IpricingService {
-  calculateTotalPrice(cart: Icart): number;
+export interface IPricingService {
+  calculateTotalPrice(cart: ICart): number;
 }
 
-export interface IspecialOffer {
+export interface ISpecialOffer {
   quantity: number;
   price: number;
 }
 
-export interface IspecialOffers extends Record<string, IspecialOffer> {}
+export interface ISpecialOffers extends Record<string, ISpecialOffer> {}
 
-export interface IunitPrices extends Record<string, number> {}
+export interface IUnitPrices extends Record<string, number> {}

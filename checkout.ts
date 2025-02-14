@@ -1,16 +1,16 @@
 import {
-  Icart,
-  Icheckout,
-  IpricingService,
-  IspecialOffers,
-  IunitPrices,
+  ICart,
+  ICheckout,
+  IPricingService,
+  ISpecialOffers,
+  IUnitPrices,
 } from "./interfaces";
 
-export class Checkout implements Icheckout {
-  private cart: Icart;
-  private pricingService: IpricingService;
+export class Checkout implements ICheckout {
+  private cart: ICart;
+  private pricingService: IPricingService;
 
-  constructor(cart: Icart, pricingService: IpricingService) {
+  constructor(cart: ICart, pricingService: IPricingService) {
     this.cart = cart;
     this.pricingService = pricingService;
   }
