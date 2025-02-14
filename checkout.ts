@@ -1,10 +1,4 @@
-import {
-  ICart,
-  ICheckout,
-  IPricingService,
-  ISpecialOffers,
-  IUnitPrices,
-} from "./interfaces";
+import { ICart, ICheckout, IPricingService } from "./interfaces";
 
 export class Checkout implements ICheckout {
   private cart: ICart;
