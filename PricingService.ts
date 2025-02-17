@@ -34,7 +34,7 @@ export class PricingService implements IPricingService {
       }
 
       const skuTotal = specialOfferPricingStrategy
-        ? specialOfferPricingStrategy.getPrice(count, unitPrice)
+        ? specialOfferPricingStrategy.getPrice(count, unitPrice, offer)
         : unitPrice * count;
 
       return total + skuTotal;

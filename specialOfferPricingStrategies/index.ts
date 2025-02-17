@@ -1,23 +1,41 @@
-import { ISpecialOfferPricingStrategy } from "../interfaces";
+import {
+  IMultibuySpecialOffer,
+  IPercentageDiscountSpecialOffer,
+  ISpecialOffer,
+  ISpecialOfferPricingStrategy,
+} from "../interfaces";
 
 class QuantityOfferStrategy implements ISpecialOfferPricingStrategy {
-  constructor(private offerQty: number, private offerPrice: number) {}
+  constructor() {}
 
-  getPrice(quantity: number, unitPrice: number): number {
-    const sets = Math.floor(quantity / this.offerQty);
-    const remainder = quantity % this.offerQty;
-    return sets * this.offerPrice + remainder * unitPrice;
+  getPrice(
+    quantity: number,
+    unitPrice: number,
+    specialOffer: ISpecialOffer
+  ): number {
+    const quantitySpeicalOffer = specialOffer as IMultibuySpecialOffer;
+    const sets = Math.floor(quantity / quantitySpeicalOffer.quantity);
+    const remainder = quantity % quantitySpeicalOffer.quantity;
+    return sets * quantitySpeicalOffer.price + remainder * unitPrice;
   }
 }
 
 export class PercentageDiscountStrategy
   implements ISpecialOfferPricingStrategy
 {
-  constructor(private discountPercent: number) {}
+  constructor() {}
 
-  getPrice(quantity: number, unitPrice: number): number {
+  getPrice(
+    quantity: number,
+    unitPrice: number,
+    specialOffer: ISpecialOffer
+  ): number {
+    const percentageDiscountSpeicalOffer =
+      specialOffer as IPercentageDiscountSpecialOffer;
     const subtotal = quantity * unitPrice;
-    return subtotal * (1 - this.discountPercent / 100);
+    return (
+      subtotal * (1 - percentageDiscountSpeicalOffer.discountPercent / 100)
+    );
   }
 }
 
@@ -25,7 +43,6 @@ export const SpecialOfferPricingStrategies: Record<
   string,
   ISpecialOfferPricingStrategy
 > = {
-  multiBuy3: new QuantityOfferStrategy(3, 130),
-  multiBuy2: new QuantityOfferStrategy(2, 45),
-  tenPercentOff: new PercentageDiscountStrategy(10),
+  ["multiBuy"]: new QuantityOfferStrategy(),
+  ["percentageDiscount"]: new PercentageDiscountStrategy(),
 };

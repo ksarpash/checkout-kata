@@ -12,17 +12,37 @@ export interface IPricingService {
   calculateTotalPrice(cart: ICart): number;
 }
 
-export interface ISpecialOffer {
+export type IMultibuySpecialOffer = {
+  offerType: "multiBuy";
+  quantity: number;
+  price: number;
+};
+
+export type IPercentageDiscountSpecialOffer = {
+  offerType: "percentageDiscount";
+  discountPercent: number;
+};
+
+export type INonExistantSpecialOffer = {
   offerType: string;
-}
+};
+
+export type ISpecialOffer =
+  | IMultibuySpecialOffer
+  | IPercentageDiscountSpecialOffer
+  | INonExistantSpecialOffer;
 
 export interface ISpecialOfferPricingStrategy {
-  getPrice(quantity: number, unitPrice: number): number;
+  getPrice(
+    quantity: number,
+    unitPrice: number,
+    specialOffer: ISpecialOffer
+  ): number;
 }
 
 export interface ISpecialOfferPricingStragies
   extends Record<string, ISpecialOfferPricingStrategy> {}
 
-export interface ISpecialOffers extends Record<string, ISpecialOffer> {}
+export type ISpecialOffers = Record<string, ISpecialOffer>;
 
 export interface IUnitPrices extends Record<string, number> {}

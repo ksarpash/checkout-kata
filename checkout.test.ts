@@ -7,9 +7,20 @@ import { SpecialOfferPricingStrategies } from "./specialOfferPricingStrategies";
 let checkout: Checkout;
 let unitPrices: IUnitPrices = { A: 50, B: 30, C: 20, D: 15, E: 100 };
 let specialOffers: ISpecialOffers = {
-  A: { offerType: "multiBuy3" },
-  B: { offerType: "multiBuy2" },
-  E: { offerType: "tenPercentOff" },
+  A: {
+    offerType: "multiBuy",
+    quantity: 3,
+    price: 130,
+  },
+  B: {
+    offerType: "multiBuy",
+    quantity: 2,
+    price: 45,
+  },
+  E: {
+    offerType: "percentageDiscount",
+    discountPercent: 10,
+  },
 };
 
 describe("Checkout with offers that exist", () => {
@@ -83,8 +94,8 @@ describe("Checkout with an non existant special offer", () => {
   beforeEach(() => {
     unitPrices = { A: 50, B: 30, C: 20, D: 15 };
     specialOffers = {
-      A: { offerType: "multiBuy3" },
-      B: { offerType: "multiBuy8" },
+      A: { offerType: "holidayOffer" },
+      B: { offerType: "multiBuy", quantity: 2, price: 45 },
     };
     checkout = new Checkout(
       new Cart(),
@@ -98,6 +109,7 @@ describe("Checkout with an non existant special offer", () => {
 
   it("should warn if an unrecognized offer key is provided and default to the unit price", () => {
     const consoleWarnSpy = jest.spyOn(console, "warn").mockImplementation();
+    checkout.scan("A");
     checkout.scan("B");
     checkout.scan("B");
     checkout.scan("B");
@@ -107,7 +119,7 @@ describe("Checkout with an non existant special offer", () => {
     checkout.scan("B");
     checkout.scan("B");
 
-    expect(checkout.getTotalPrice()).toBe(240);
+    expect(checkout.getTotalPrice()).toBe(230);
     expect(consoleWarnSpy).toHaveBeenCalledWith(
       'Unrecognized offer key: "undefined". Defaulting to no offer.'
     );
