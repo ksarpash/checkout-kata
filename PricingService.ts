@@ -29,7 +29,7 @@ export class PricingService implements IPricingService {
 
       if (!specialOfferPricingStrategy && offer) {
         console.warn(
-          `Unrecognized offer key: "${specialOfferPricingStrategy}". Defaulting to no offer.`
+          `Unrecognized offer key: "${offer.offerType}". Defaulting to no offer.`
         );
       }
 

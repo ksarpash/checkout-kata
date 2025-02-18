@@ -121,7 +121,7 @@ describe("Checkout with an non existant special offer", () => {
 
     expect(checkout.getTotalPrice()).toBe(230);
     expect(consoleWarnSpy).toHaveBeenCalledWith(
-      'Unrecognized offer key: "undefined". Defaulting to no offer.'
+      'Unrecognized offer key: "holidayOffer". Defaulting to no offer.'
     );
   });
 });
