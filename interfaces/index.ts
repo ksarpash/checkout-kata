@@ -25,6 +25,7 @@ export type IPercentageDiscountSpecialOffer = {
 
 export type INonExistantSpecialOffer = {
   offerType: string;
+  [key: string]: unknown;
 };
 
 export type ISpecialOffer =

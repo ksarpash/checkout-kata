@@ -94,7 +94,7 @@ describe("Checkout with an non existant special offer", () => {
   beforeEach(() => {
     unitPrices = { A: 50, B: 30, C: 20, D: 15 };
     specialOffers = {
-      A: { offerType: "holidayOffer" },
+      A: { offerType: "holidayOffer1CurrencyUnitOff", deduction: 1 },
       B: { offerType: "multiBuy", quantity: 2, price: 45 },
     };
     checkout = new Checkout(
@@ -121,7 +121,7 @@ describe("Checkout with an non existant special offer", () => {
 
     expect(checkout.getTotalPrice()).toBe(230);
     expect(consoleWarnSpy).toHaveBeenCalledWith(
-      'Unrecognized offer key: "holidayOffer". Defaulting to no offer.'
+      'Unrecognized offer key: "holidayOffer1CurrencyUnitOff". Defaulting to no offer.'
     );
   });
 });
